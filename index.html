@@ -9,6 +9,9 @@
     <script src="vendor/bs46/js/bootstrap.bundle.min.js"></script>
 
     <style>
+        #game table.table {
+            width: auto;
+        }
         #name-length {
             position: absolute;
             left: -9999px;
@@ -27,6 +30,7 @@
             border: 1px solid #ccc;
             padding: 1px 5px;
             text-align: center;
+            vertical-align: middle;
         }
         #game table th {
             vertical-align: bottom;
@@ -70,15 +74,45 @@
             transform: rotate(-90deg);
             transform-origin: left;
             margin-left: 9px;
-            margin-top: -1rem;
+            margin-top: -40%;
+            /*margin-top: -1rem;*/
         }
+
+        @media (min-width: 768px) {
+            #name-length {
+                font-size: 200%;
+            }
+            #game table {
+                table-layout : auto;
+                border-collapse: collapse;
+                margin: 1rem;
+            }
+            #game table.table {
+                width: 100%;
+                font-size: 200%;
+            }
+            #game table td {
+                width: 6rem;
+                height: 5rem;
+            }
+            #game table.table th.item {
+                vertical-align: middle;
+            }
+        }
+
+
     </style>
 </head>
 <body class="vertical-name">
 <style id="style"></style>
 <div id="name-length"></div>
 
-<div class="container">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <br>
+        </div>
+    </div>
     <div class="row">
         <div class="col-12">
             <button class="btn btn-lg float-right btn-outline-dark" id="btn-settings">🛠</button>
@@ -253,7 +287,8 @@
             $measure.text($inp.val());
             name_len = Math.max(name_len, $measure.width());
         });
-        name_len += 20; // paddings
+        // name_len += 20; // paddings
+        name_len += $measure.height();
         $('#style').html('.vertical-name #game table th.name {height: ' + name_len + 'px;}');
 
         var html = '';
@@ -281,7 +316,7 @@
 
     function makeTable(values)
     {
-        var table = '<table class=""><thead><tr><th scope="col"></th><th scope="col">Я</th>';
+        var table = '<table class="table"><thead><tr><th scope="col"></th><th scope="col">Я</th>';
         var c = 1;
         $('#table-players').find('input[class!=disabled]').each(function(){
             c++;
