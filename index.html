@@ -31,6 +31,7 @@
             padding: 1px 5px;
             text-align: center;
             vertical-align: middle;
+            touch-action: manipulation;
         }
         #game table th {
             vertical-align: bottom;
@@ -250,7 +251,10 @@
         });
 
         // клик по клетке
-        $('#game').on('click', 'td', function() {
+        $('#game').on('click', 'td', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
             var $td = $(this);
             switch ($td.data('state')) {
                 case 'yes':
@@ -268,6 +272,8 @@
                 default:
                     $td.html('<span class="no">&times;</span>').data('state', 'no');
             }
+
+            return false;
         });
 
         $('#start').on('click', function() {
