@@ -1,0 +1,2 @@
+# cluedo
+Cluedo helper
