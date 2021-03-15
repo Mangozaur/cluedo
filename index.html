@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+    <link rel="stylesheet" href="vendor/bs46/css/bootstrap.min.css">
+    <script src="vendor/jquery-3.0.0.slim.min.js"></script>
+    <script src="vendor/bs46/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+        #name-length {
+            position: absolute;
+            left: -9999px;
+        }
+        #game {
+            display: flex;
+            flex-flow: wrap;
+        }
+        #game table {
+            table-layout : fixed;
+            border-collapse: collapse;
+            margin: 1rem;
+        }
+        #game table td,
+        #game table th {
+            border: 1px solid #ccc;
+            padding: 1px 5px;
+            text-align: center;
+        }
+        #game table th {
+            vertical-align: bottom;
+        }
+        #game table th.item {
+            cursor: pointer;
+            text-align: left;
+        }
+        #game table th.strike {
+            text-decoration: line-through;
+        }
+
+        #game table td {
+            min-width: 2rem;
+            font-weight: bold;
+        }
+        #game table td span.yes {
+            color: blue;
+        }
+        #game table td span.no {
+            color: crimson;
+            font-size: 150%;
+            line-height: 0;
+        }
+        #game table td span.q {
+            color: gray;
+        }
+
+        #game table th.name {
+            text-align: center;
+        }
+
+        .vertical-name #game table th.name {
+            position: relative;
+        }
+        .vertical-name #game table th.name span {
+            position: absolute;
+            display:block;
+            white-space:nowrap;
+            text-align: left;
+            transform: rotate(-90deg);
+            transform-origin: left;
+            margin-left: 9px;
+            margin-top: -1rem;
+        }
+    </style>
+</head>
+<body class="vertical-name">
+<style id="style"></style>
+<div id="name-length"></div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <button class="btn btn-lg float-right btn-outline-dark" id="btn-settings">🛠</button>
+            <h1>Cluedo</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12" id="game">
+
+        </div>
+    </div>
+
+</div>
+
+<!--[ MODAL START ]-->
+<div class="modal" tabindex="-1" id="settings-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Настройки игры</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#players">Игроки</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#chars">Персонажи</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#rooms">Комнаты</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#weapons">Оружие</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane active" id="players" role="tabpanel">
+                        <label>
+                            <input type="checkbox" checked id="vertical-names"> Вертикальные имена
+                        </label>
+                        <table class="table table-borderless table-sm" id="table-players">
+                            <tr><td><input value="Я" class="disabled" disabled></td></tr>
+                            <tr><td><input value="Игрок 1" ><button class="btn btn-sm btn-outline-danger float-right btn-remove">&times;</button></td></tr>
+                            <tr><td><input value="Игрок 2"><button class="btn btn-sm btn-outline-danger float-right btn-remove">&times;</button></td></tr>
+                            <tr><td><input value="Игрок 3"><button class="btn btn-sm btn-outline-danger float-right btn-remove">&times;</button></td></tr>
+                            <tr><td><input value="Игрок 4"><button class="btn btn-sm btn-outline-danger float-right btn-remove">&times;</button></td></tr>
+                            <tr><td><button class="btn btn-info" id="btn-add-player">Еще игрок</button></tr>
+                        </table>
+                    </div>
+
+                    <div class="tab-pane" id="chars" role="tabpanel">
+                        <table class="table table-borderless table-sm">
+                            <tr><td><input value="Горчичников" required></td></tr>
+                            <tr><td><input value="Краснова" required></td></tr>
+                            <tr><td><input value="Белых" required></td></tr>
+                            <tr><td><input value="Зеленович" required></td></tr>
+                            <tr><td><input value="Голубева" required></td></tr>
+                            <tr><td><input value="Черниченко" required></td></tr>
+                        </table>
+                    </div>
+
+                    <div class="tab-pane" id="rooms" role="tabpanel">
+                        <table class="table table-borderless table-sm">
+                            <tr><td><input value="Ванная комната" required></td></tr>
+                            <tr><td><input value="Демонстрационный зал" required></td></tr>
+                            <tr><td><input value="Гостиная" required></td></tr>
+                            <tr><td><input value="Обсерватория" required></td></tr>
+                            <tr><td><input value="Прихожая" required></td></tr>
+                            <tr><td><input value="Дом для гостей" required></td></tr>
+                            <tr><td><input value="Столовая" required></td></tr>
+                            <tr><td><input value="Кухня" required></td></tr>
+                            <tr><td><input value="Терасса" required></td></tr>
+                        </table>
+                    </div>
+
+                    <div class="tab-pane" id="weapons" role="tabpanel">
+                        <table class="table table-borderless table-sm">
+                            <tr><td><input value="Бита" required></td></tr>
+                            <tr><td><input value="Пистолет" required></td></tr>
+                            <tr><td><input value="Канделябр" required></td></tr>
+                            <tr><td><input value="Нож" required></td></tr>
+                            <tr><td><input value="Трофей" required></td></tr>
+                            <tr><td><input value="Топор" required></td></tr>
+                            <tr><td><input value="Гантеля" required></td></tr>
+                            <tr><td><input value="Яд" required></td></tr>
+                            <tr><td><input value="Веревка" required></td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary float-left" data-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-primary" id="start">Начать</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--[ MODAL END ]-->
+
+<script>
+    $(function () {
+        $('#btn-settings').on('click', function() {
+            $('#settings-modal').modal({
+                backdrop: 'static',
+            });
+        });
+
+        // добавить игрока
+        $('#btn-add-player').on('click', function(e) {
+            var $btn = $(e.currentTarget);
+            var $tr = $btn.closest('tr');
+            $tr.before('<tr><td><input value=""><button class="btn btn-sm btn-outline-danger float-right btn-remove">&times;</button></td></tr>');
+        });
+
+        // удалить игрока
+        $('#table-players').on('click', '.btn-remove', function () {
+            $(this).closest('tr').remove();
+        })
+
+        $('#vertical-names').on('click', function () {
+            $('body').toggleClass('vertical-name');
+        });
+
+        // Зачеркивание пунктов
+        $('#game').on('click', 'th.item', function(){
+            $(this).toggleClass('strike');
+        });
+
+        // клик по клетке
+        $('#game').on('click', 'td', function() {
+            var $td = $(this);
+            switch ($td.data('state')) {
+                case 'yes':
+                    $td.html('<span class="q">?</span>').data('state', 'q');
+                    break;
+
+                case 'no':
+                    $td.html('<span class="yes">V</span>').data('state', 'yes');
+                    break;
+
+                case 'q':
+                    $td.html('').data('state', '');
+                    break;
+
+                default:
+                    $td.html('<span class="no">&times;</span>').data('state', 'no');
+            }
+        });
+
+        $('#start').on('click', function() {
+            startGame();
+            $('#settings-modal').modal('hide');
+        });
+
+        startGame();
+    });
+
+    function startGame() {
+        // name len
+        var name_len = 0;
+        var $measure = $('#name-length');
+        $('#table-players').find('input').each(function(){
+            var $inp = $(this);
+            $measure.text($inp.val());
+            name_len = Math.max(name_len, $measure.width());
+        });
+        name_len += 20; // paddings
+        $('#style').html('.vertical-name #game table th.name {height: ' + name_len + 'px;}');
+
+        var html = '';
+        var chars = [];
+        $('#chars').find('input').each(function () {
+            chars.push($(this).val());
+        });
+        html += makeTable(chars);
+
+        var weapons = [];
+        $('#weapons').find('input').each(function () {
+            weapons.push($(this).val());
+        });
+        html += makeTable(weapons);
+
+        var rooms = [];
+        $('#rooms').find('input').each(function () {
+            rooms.push($(this).val());
+        });
+        html += makeTable(rooms);
+
+
+        $('#game').html(html);
+    }
+
+    function makeTable(values)
+    {
+        var table = '<table class=""><thead><tr><th scope="col"></th><th scope="col">Я</th>';
+        var c = 1;
+        $('#table-players').find('input[class!=disabled]').each(function(){
+            c++;
+            var $inp = $(this);
+            table += '<th scope="col" class="name"><span>' + $inp.val() + '</span></th>';
+        });
+
+        table += '</tr></thead><tbody>\n';
+
+        values.forEach(function (v) {
+            table += '<tr><th scope="row" class="item">' + v + '</th>';
+            for (var i = 0; i < c; i++) {
+                table += '<td></td>';
+            }
+            table += '</tr>';
+        });
+
+        table += '</tbody></table>';
+
+        return table;
+    }
+</script>
+</body>
+</html>
